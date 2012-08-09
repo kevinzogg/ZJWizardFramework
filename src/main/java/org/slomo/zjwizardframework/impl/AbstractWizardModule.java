@@ -3,6 +3,7 @@ package org.slomo.zjwizardframework.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slomo.zjwizardframework.IWizardModule;
 import org.slomo.zjwizardframework.IWizardStep;
 
 /**
@@ -11,7 +12,7 @@ import org.slomo.zjwizardframework.IWizardStep;
  * 
  * @author Kevin Zogg
  */
-public abstract class AbstractWizardModule {
+public abstract class AbstractWizardModule implements IWizardModule {
 	private final List<IWizardStep> wizardSteps;
 	private int currentStep;
 
@@ -21,18 +22,17 @@ public abstract class AbstractWizardModule {
 	}
 
 	/**
-	 * Adds a step to the wizard. The steps are executed in the same order as
-	 * they have been added.
-	 * 
-	 * @param wizardStep
+	 * {@inheritDoc}
 	 */
+	@Override
 	public void addWizardStep(IWizardStep wizardStep) {
 		wizardSteps.add(wizardStep);
 	}
 
 	/**
-	 * @return the current wizard step.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public IWizardStep getCurrentStep() {
 		if (wizardSteps.size() < currentStep) {
 			throw new IllegalStateException("The current step for the wizard module is undefined.");
@@ -41,18 +41,36 @@ public abstract class AbstractWizardModule {
 	}
 
 	/**
-	 * @return true if the last step of the wizard is active.
+	 * {@inheritDoc}
 	 */
+	@Override
 	public boolean isLastStep() {
 		return (wizardSteps.size() == (1 + currentStep));
 	}
 
 	/**
-	 * Advances the wizard one step forward.
+	 * {@inheritDoc}
 	 */
-	public void nextStep() {
+	@Override
+	public boolean isFirstStep() {
+		return (0 == currentStep);
+	}
+
+	protected void cleanUp() {
+		wizardSteps.clear();
+		currentStep = 0;
+	}
+
+	protected void setNextStep() {
 		if (isLastStep()) {
 			++currentStep;
 		}
 	}
+
+	protected void setPreviousStep() {
+		if (!isFirstStep()) {
+			--currentStep;
+		}
+	}
+
 }
