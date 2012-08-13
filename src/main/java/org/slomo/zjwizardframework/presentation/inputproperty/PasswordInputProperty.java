@@ -4,20 +4,20 @@ import org.slomo.zjwizardframework.presentation.IInputProperty;
 import org.slomo.zjwizardframework.presentation.standard.InteractiveStepPresenter;
 
 /**
- * Property which holds a simple text string. This usually represents a simple
- * input field.
+ * Input property which represents a password input field. Be careful, as the
+ * password is accessible via {@link PasswordInputProperty#getValue()}.
  * 
  * @author Kevin Zogg
  */
-public class TextFieldInputProperty extends AbstractLabelledProperty implements IInputProperty {
+public class PasswordInputProperty extends AbstractLabelledProperty implements IInputProperty {
 	private String value;
 
-	public TextFieldInputProperty() {
+	public PasswordInputProperty() {
 		super();
 		value = "";
 	}
 
-	public TextFieldInputProperty(String label) {
+	public PasswordInputProperty(String label) {
 		super(label);
 		value = "";
 	}
@@ -31,15 +31,17 @@ public class TextFieldInputProperty extends AbstractLabelledProperty implements 
 	}
 
 	/**
-	 * @return the value
+	 * @return the password
 	 */
 	public String getValue() {
 		return value;
 	}
 
 	/**
+	 * Sets the password property.
+	 * 
 	 * @param value
-	 *            the property value
+	 *            the password
 	 */
 	public void setValue(String value) {
 		this.value = value;

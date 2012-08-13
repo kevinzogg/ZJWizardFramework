@@ -14,6 +14,7 @@ public class SimpleWizardExample extends AbstractWizardModule {
 	private final IWizardStepPresenter presenter;
 
 	public SimpleWizardExample() {
+		super("TEST");
 		presenter = new StandardWizardPresenter(this);
 		SelectBoxExampleWizardStep nameSelectionStep = new SelectBoxExampleWizardStep();
 

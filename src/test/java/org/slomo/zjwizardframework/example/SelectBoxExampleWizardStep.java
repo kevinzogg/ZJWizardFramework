@@ -39,4 +39,14 @@ public class SelectBoxExampleWizardStep implements IInteractiveWizardStep {
 		properties.add(availableNames);
 		return properties;
 	}
+
+	@Override
+	public boolean canStepNext() {
+		return true;
+	}
+
+	@Override
+	public boolean canStepBack() {
+		return true;
+	}
 }

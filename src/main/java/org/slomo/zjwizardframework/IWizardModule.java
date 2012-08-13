@@ -39,4 +39,9 @@ public interface IWizardModule {
 	 * Cancels the wizard.
 	 */
 	void cancel();
+
+	/**
+	 * @return the title of the wizard module
+	 */
+	String getTitle();
 }

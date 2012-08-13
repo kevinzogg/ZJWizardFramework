@@ -15,8 +15,10 @@ import org.slomo.zjwizardframework.IWizardStep;
 public abstract class AbstractWizardModule implements IWizardModule {
 	private final List<IWizardStep> wizardSteps;
 	private int currentStep;
+	private final String title;
 
-	public AbstractWizardModule() {
+	public AbstractWizardModule(String title) {
+		this.title = title;
 		wizardSteps = new ArrayList<IWizardStep>();
 		currentStep = 0;
 	}
@@ -56,21 +58,38 @@ public abstract class AbstractWizardModule implements IWizardModule {
 		return (0 == currentStep);
 	}
 
+	/**
+	 * Resets and releases all attributes of the fetcher, so that it can be
+	 * reinitialized.
+	 */
 	protected void cleanUp() {
 		wizardSteps.clear();
 		currentStep = 0;
 	}
 
+	/**
+	 * Increases the current step by one if possible.
+	 */
 	protected void setNextStep() {
-		if (isLastStep()) {
+		if (!isLastStep()) {
 			++currentStep;
 		}
 	}
 
+	/**
+	 * Decreases the current step by one if possible.
+	 */
 	protected void setPreviousStep() {
 		if (!isFirstStep()) {
 			--currentStep;
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getTitle() {
+		return title;
+	}
 }
