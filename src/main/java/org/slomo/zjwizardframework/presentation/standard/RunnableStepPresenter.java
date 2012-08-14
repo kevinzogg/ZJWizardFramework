@@ -11,8 +11,15 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
 
 import org.slomo.zjwizardframework.IRunnableWizardStep;
+import org.slomo.zjwizardframework.presentation.IRunnableStepPresenter;
 
-public class RunnableStepPresenter {
+/**
+ * Presenter for runnable steps. Uses swing and a {@link JProgressBar} to
+ * indicate the progress.
+ * 
+ * @author Kevin Zogg
+ */
+class RunnableStepPresenter implements IRunnableStepPresenter {
 
 	private final JPanel contentPanel;
 	private JProgressBar progressbar;
@@ -23,8 +30,13 @@ public class RunnableStepPresenter {
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
 	}
 
+	/**
+	 * Renders the given runnable step with this presenter.
+	 * 
+	 * @param runnableStep
+	 */
+	@Override
 	public void render(final IRunnableWizardStep runnableStep) {
-
 		contentPanel.removeAll();
 
 		initProgressText();
@@ -34,6 +46,30 @@ public class RunnableStepPresenter {
 		contentPanel.add(progressbar);
 	}
 
+	/**
+	 * Updates the progress and message which are displayed.
+	 * 
+	 * @param progress
+	 * @param message
+	 */
+	@Override
+	public void updateProgressDisplay(int progress, String message) {
+		progressbar.setValue(progress);
+		progressText.setText(message);
+		contentPanel.revalidate();
+		contentPanel.repaint();
+	}
+
+	/**
+	 * @return the content panel which contains the progress message and bar.
+	 */
+	public Component getContentPanel() {
+		return contentPanel;
+	}
+
+	/**
+	 * Initializes the progress label.
+	 */
 	private void initProgressText() {
 		progressText = new JLabel("Initializing...");
 		progressText.setBorder(BorderFactory.createEmptyBorder(20, 5, 20, 5));
@@ -42,6 +78,9 @@ public class RunnableStepPresenter {
 		progressText.setHorizontalAlignment(SwingConstants.CENTER);
 	}
 
+	/**
+	 * Initializes the progress bar.
+	 */
 	private void initProgressbar() {
 		progressbar = new JProgressBar(0, 100);
 		progressbar.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -50,14 +89,4 @@ public class RunnableStepPresenter {
 		progressbar.setValue(0);
 	}
 
-	public void updateProgressDisplay(int progress, String message) {
-		progressbar.setValue(progress);
-		progressText.setText(message);
-		contentPanel.revalidate();
-		contentPanel.repaint();
-	}
-
-	public Component getContentPanel() {
-		return contentPanel;
-	}
 }

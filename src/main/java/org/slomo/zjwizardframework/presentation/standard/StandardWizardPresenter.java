@@ -22,6 +22,13 @@ import org.slomo.zjwizardframework.IWizardModule;
 import org.slomo.zjwizardframework.IWizardStep;
 import org.slomo.zjwizardframework.presentation.IWizardStepPresenter;
 
+/**
+ * The standard wizard presenter uses {@link InteractiveStepPresenter} and
+ * {@link RunnableStepPresenter} to display the wizard with swing inside a
+ * {@link JDialog}.
+ * 
+ * @author Kevin Zogg
+ */
 public class StandardWizardPresenter implements IWizardStepPresenter {
 
 	private final IWizardModule wizardModule;
@@ -43,14 +50,23 @@ public class StandardWizardPresenter implements IWizardStepPresenter {
 		finishAction = cancelAction;
 	}
 
-	public void setInteractiveStepPresenter(InteractiveStepPresenter interactiveStepPresenter) {
-		this.interactiveStepPresenter = interactiveStepPresenter;
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void init() {
+		dialog = new JDialog();
+		dialog.setResizable(false);
+		dialog.setTitle(wizardModule.getTitle());
+		dialog.setMinimumSize(new Dimension(300, 200));
+
+		interactiveStepPresenter = new InteractiveStepPresenter();
+		runnableStepPresenter = new RunnableStepPresenter();
 	}
 
-	public void setRunnableStepPresenter(RunnableStepPresenter runnableStepPresenter) {
-		this.runnableStepPresenter = runnableStepPresenter;
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void renderStep(IInteractiveWizardStep interactiveStep) {
 		JPanel container = new JPanel();
@@ -65,43 +81,9 @@ public class StandardWizardPresenter implements IWizardStepPresenter {
 		dialog.setVisible(true);
 	}
 
-	private Component createButtonBar(IWizardStep step) {
-		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		buttonPanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.black));
-		buttonPanel.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-
-		if (!wizardModule.isFirstStep()) {
-			JButton prevButton = new JButton(prevAction);
-			prevButton.setText("< Back");
-			if (!step.canStepBack()) {
-				prevButton.setEnabled(false);
-			}
-			buttonPanel.add(prevButton);
-		}
-
-		if (!wizardModule.isLastStep()) {
-			JButton nextButton = new JButton(nextAction);
-			nextButton.setText("Next >");
-			if (!step.canStepNext()) {
-				nextButton.setEnabled(false);
-			}
-			buttonPanel.add(nextButton);
-		} else {
-			JButton finishButton = new JButton(finishAction);
-			finishButton.setText("Finish");
-			if (!step.canStepNext()) {
-				finishButton.setEnabled(false);
-			}
-			buttonPanel.add(finishButton);
-		}
-
-		JButton cancelButton = new JButton(cancelAction);
-		cancelButton.setText("Cancel");
-		buttonPanel.add(cancelButton);
-
-		return buttonPanel;
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void renderStep(final IRunnableWizardStep runnableStep) {
 		JPanel container = new JPanel();
@@ -139,29 +121,70 @@ public class StandardWizardPresenter implements IWizardStepPresenter {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void shutdown() {
+		dialog.dispose();
+		runnableStepPresenter = null;
+		interactiveStepPresenter = null;
+	}
+
+	/**
+	 * Creates the button bar at the bottom of the wizard.
+	 * 
+	 * @param step
+	 * @return Component containing the button bar.
+	 */
+	private Component createButtonBar(IWizardStep step) {
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		buttonPanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.black));
+		buttonPanel.setAlignmentY(Component.BOTTOM_ALIGNMENT);
+
+		if (!wizardModule.isFirstStep()) {
+			JButton prevButton = new JButton(prevAction);
+			prevButton.setText("< Back");
+			if (!step.canStepBack()) {
+				prevButton.setEnabled(false);
+			}
+			buttonPanel.add(prevButton);
+		}
+
+		if (!wizardModule.isLastStep()) {
+			JButton nextButton = new JButton(nextAction);
+			nextButton.setText("Next >");
+			if (!step.canStepNext()) {
+				nextButton.setEnabled(false);
+			}
+			buttonPanel.add(nextButton);
+		} else {
+			JButton finishButton = new JButton(finishAction);
+			finishButton.setText("Finish");
+			if (!step.canStepNext()) {
+				finishButton.setEnabled(false);
+			}
+			buttonPanel.add(finishButton);
+		}
+
+		JButton cancelButton = new JButton(cancelAction);
+		cancelButton.setText("Cancel");
+		buttonPanel.add(cancelButton);
+
+		return buttonPanel;
+	}
+
+	/**
+	 * Checks if any buttons have changed their state and enables/disables them
+	 * accordingly.
+	 * 
+	 * @param runnableStep
+	 */
 	private void reValidateButtonBar(IRunnableWizardStep runnableStep) {
 		Component buttons = createButtonBar(runnableStep);
 
 		dialog.getContentPane().remove(1);
 		dialog.getContentPane().add(buttons, BorderLayout.SOUTH);
 		dialog.validate();
-	}
-
-	@Override
-	public void init() {
-		dialog = new JDialog();
-		dialog.setResizable(false);
-		dialog.setTitle(wizardModule.getTitle());
-		dialog.setMinimumSize(new Dimension(300, 200));
-
-		interactiveStepPresenter = new InteractiveStepPresenter();
-		runnableStepPresenter = new RunnableStepPresenter();
-	}
-
-	@Override
-	public void shutdown() {
-		dialog.dispose();
-		runnableStepPresenter = null;
-		interactiveStepPresenter = null;
 	}
 }

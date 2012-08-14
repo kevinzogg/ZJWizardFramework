@@ -6,7 +6,12 @@ import javax.swing.AbstractAction;
 
 import org.slomo.zjwizardframework.IWizardModule;
 
-public class CancelAction extends AbstractAction {
+/**
+ * Cancel button action. Cancels the wizard with {@link IWizardModule#cancel()}.
+ * 
+ * @author Kevin Zogg
+ */
+class CancelAction extends AbstractAction {
 	private static final long serialVersionUID = -8609083049169385842L;
 
 	private final IWizardModule wizard;
@@ -15,6 +20,9 @@ public class CancelAction extends AbstractAction {
 		this.wizard = wizard;
 	}
 
+	/**
+	 * Cancels the wizard.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		wizard.cancel();

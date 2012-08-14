@@ -1,7 +1,7 @@
 package org.slomo.zjwizardframework.presentation.inputproperty;
 
 import org.slomo.zjwizardframework.presentation.IInputProperty;
-import org.slomo.zjwizardframework.presentation.standard.InteractiveStepPresenter;
+import org.slomo.zjwizardframework.presentation.IInteractiveStepPresenter;
 
 /**
  * Property which holds a simple text string. This usually represents a simple
@@ -26,7 +26,7 @@ public class TextFieldInputProperty extends AbstractLabelledProperty implements 
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void presentWith(InteractiveStepPresenter interactiveStepPresenter) {
+	public void presentWith(IInteractiveStepPresenter interactiveStepPresenter) {
 		interactiveStepPresenter.render(this);
 	}
 

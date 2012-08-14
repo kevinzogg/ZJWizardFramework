@@ -3,7 +3,7 @@ package org.slomo.zjwizardframework.presentation.inputproperty;
 import java.util.List;
 
 import org.slomo.zjwizardframework.presentation.IInputProperty;
-import org.slomo.zjwizardframework.presentation.standard.InteractiveStepPresenter;
+import org.slomo.zjwizardframework.presentation.IInteractiveStepPresenter;
 
 /**
  * Represents a drop down select box. Only one element can be selected. Usually
@@ -62,7 +62,7 @@ public class SelectBoxInputProperty<T> extends AbstractLabelledProperty implemen
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void presentWith(InteractiveStepPresenter interactiveStepPresenter) {
+	public void presentWith(IInteractiveStepPresenter interactiveStepPresenter) {
 		interactiveStepPresenter.render(this);
 	}
 }

@@ -1,7 +1,5 @@
 package org.slomo.zjwizardframework.presentation;
 
-import org.slomo.zjwizardframework.presentation.standard.InteractiveStepPresenter;
-
 /**
  * Definition of an input property. An input property has to present itself to
  * the given {@link InteractiveStepPresenter}. Any needed preprocessing can be
@@ -18,5 +16,5 @@ public interface IInputProperty {
 	 * 
 	 * @param interactiveStepPresenter
 	 */
-	void presentWith(InteractiveStepPresenter interactiveStepPresenter);
+	void presentWith(IInteractiveStepPresenter interactiveStepPresenter);
 }

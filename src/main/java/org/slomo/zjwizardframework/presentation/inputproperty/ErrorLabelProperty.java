@@ -1,7 +1,7 @@
 package org.slomo.zjwizardframework.presentation.inputproperty;
 
 import org.slomo.zjwizardframework.presentation.IInputProperty;
-import org.slomo.zjwizardframework.presentation.standard.InteractiveStepPresenter;
+import org.slomo.zjwizardframework.presentation.IInteractiveStepPresenter;
 
 /**
  * This property only represents an errormessage to display on the wizard.
@@ -18,7 +18,7 @@ public class ErrorLabelProperty extends AbstractLabelledProperty implements IInp
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void presentWith(InteractiveStepPresenter interactiveStepPresenter) {
+	public void presentWith(IInteractiveStepPresenter interactiveStepPresenter) {
 		interactiveStepPresenter.render(this);
 	}
 }

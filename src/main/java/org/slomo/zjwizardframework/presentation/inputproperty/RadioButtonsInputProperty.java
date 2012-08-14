@@ -2,7 +2,7 @@ package org.slomo.zjwizardframework.presentation.inputproperty;
 
 import java.util.List;
 
-import org.slomo.zjwizardframework.presentation.standard.InteractiveStepPresenter;
+import org.slomo.zjwizardframework.presentation.IInteractiveStepPresenter;
 
 /**
  * Represents a set of radio buttons. Only one can be selected. Usually the
@@ -62,7 +62,7 @@ public class RadioButtonsInputProperty<T> extends AbstractLabelledProperty {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void presentWith(InteractiveStepPresenter interactiveStepPresenter) {
+	public void presentWith(IInteractiveStepPresenter interactiveStepPresenter) {
 		interactiveStepPresenter.render(this);
 	}
 }

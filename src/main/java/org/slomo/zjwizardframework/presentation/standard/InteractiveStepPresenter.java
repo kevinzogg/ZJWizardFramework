@@ -26,6 +26,7 @@ import javax.swing.event.DocumentListener;
 
 import org.slomo.zjwizardframework.IInteractiveWizardStep;
 import org.slomo.zjwizardframework.presentation.IInputProperty;
+import org.slomo.zjwizardframework.presentation.IInteractiveStepPresenter;
 import org.slomo.zjwizardframework.presentation.inputproperty.AbstractLabelledProperty;
 import org.slomo.zjwizardframework.presentation.inputproperty.CheckboxInputProperty;
 import org.slomo.zjwizardframework.presentation.inputproperty.ErrorLabelProperty;
@@ -34,7 +35,13 @@ import org.slomo.zjwizardframework.presentation.inputproperty.RadioButtonsInputP
 import org.slomo.zjwizardframework.presentation.inputproperty.SelectBoxInputProperty;
 import org.slomo.zjwizardframework.presentation.inputproperty.TextFieldInputProperty;
 
-public class InteractiveStepPresenter {
+/**
+ * Presents an interactive step. Uses swing input fields like {@link JTextField}
+ * to create a form for all input properties.
+ * 
+ * @author Kevin Zogg
+ */
+class InteractiveStepPresenter implements IInteractiveStepPresenter {
 
 	private final JPanel contentPanel;
 
@@ -43,6 +50,19 @@ public class InteractiveStepPresenter {
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
 	}
 
+	/**
+	 * @return the content panel which contains all rendered input properties.
+	 */
+	public Component getContentPanel() {
+		return contentPanel;
+	}
+
+	/**
+	 * Renders the interactive step with this presenter.
+	 * 
+	 * @param interactiveStep
+	 */
+	@Override
 	public void render(IInteractiveWizardStep interactiveStep) {
 		contentPanel.removeAll();
 		List<IInputProperty> properties = interactiveStep.getInputProperties();
@@ -52,6 +72,12 @@ public class InteractiveStepPresenter {
 		}
 	}
 
+	/**
+	 * Renders a {@link SelectBoxInputProperty} with a {@link JComboBox}.
+	 * 
+	 * @param selectBoxInputProperty
+	 */
+	@Override
 	public <T> void render(final SelectBoxInputProperty<T> selectBoxInputProperty) {
 		JPanel panel = new JPanel(new GridLayout(1, 2));
 		addLabel(panel, selectBoxInputProperty);
@@ -73,6 +99,13 @@ public class InteractiveStepPresenter {
 		contentPanel.add(panel);
 	}
 
+	/**
+	 * Renders a {@link TextFieldInputProperty} with the standard
+	 * {@link JTextField}.
+	 * 
+	 * @param textFieldInputProperty
+	 */
+	@Override
 	public void render(final TextFieldInputProperty textFieldInputProperty) {
 		JPanel panel = new JPanel(new GridLayout(1, 2));
 		addLabel(panel, textFieldInputProperty);
@@ -105,6 +138,12 @@ public class InteractiveStepPresenter {
 		contentPanel.add(panel);
 	}
 
+	/**
+	 * Renders a {@link CheckboxInputProperty} with {@link JCheckBox}.
+	 * 
+	 * @param checkboxInputProperty
+	 */
+	@Override
 	public void render(final CheckboxInputProperty checkboxInputProperty) {
 		JPanel panel = new JPanel(new GridLayout(1, 2));
 		addLabel(panel, checkboxInputProperty);
@@ -125,18 +164,13 @@ public class InteractiveStepPresenter {
 		contentPanel.add(panel);
 	}
 
-	private void addLabel(JPanel panelToAddLabel, AbstractLabelledProperty property) {
-		JPanel tmpPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		JLabel label = new JLabel(property.getLabel() + ":");
-		label.setAlignmentY(Component.CENTER_ALIGNMENT);
-		tmpPanel.add(label);
-		panelToAddLabel.add(tmpPanel);
-	}
-
-	public Component getContentPanel() {
-		return contentPanel;
-	}
-
+	/**
+	 * renders a {@link RadioButtonsInputProperty} with a group of
+	 * {@link JRadioButton}s.
+	 * 
+	 * @param radioButtonsInputProperty
+	 */
+	@Override
 	public <T> void render(final RadioButtonsInputProperty<T> radioButtonsInputProperty) {
 		JPanel panel = new JPanel(new GridLayout(1, 2));
 		addLabel(panel, radioButtonsInputProperty);
@@ -166,6 +200,13 @@ public class InteractiveStepPresenter {
 		contentPanel.add(panel);
 	}
 
+	/**
+	 * Renders a {@link PasswordInputProperty} by using the
+	 * {@link JPasswordField}.
+	 * 
+	 * @param passwordInputProperty
+	 */
+	@Override
 	public void render(final PasswordInputProperty passwordInputProperty) {
 		JPanel panel = new JPanel(new GridLayout(1, 2));
 		addLabel(panel, passwordInputProperty);
@@ -199,17 +240,47 @@ public class InteractiveStepPresenter {
 		contentPanel.add(panel);
 	}
 
-	private void addComponentToPanel(JPanel panel, JComponent component) {
-		JPanel tmpPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		tmpPanel.add(component);
-		panel.add(tmpPanel);
-	}
-
+	/**
+	 * Renders an {@link ErrorLabelProperty}. Uses a standard {@link JLabel}
+	 * which will be colored red. An error is usually only to tell the user,
+	 * that something went wrong in the last step.
+	 * 
+	 * @param errorLabelProperty
+	 */
+	@Override
 	public void render(ErrorLabelProperty errorLabelProperty) {
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		JLabel label = new JLabel(errorLabelProperty.getLabel());
 		label.setForeground(Color.red);
 		panel.add(label);
 		contentPanel.add(panel);
+	}
+
+	/**
+	 * Adds a property to the given {@link JPanel} and ensures a consistent
+	 * layout.
+	 * 
+	 * @param panelToAddLabel
+	 * @param property
+	 */
+	private void addLabel(JPanel panelToAddLabel, AbstractLabelledProperty property) {
+		JPanel tmpPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		JLabel label = new JLabel(property.getLabel() + ":");
+		label.setAlignmentY(Component.CENTER_ALIGNMENT);
+		tmpPanel.add(label);
+		panelToAddLabel.add(tmpPanel);
+	}
+
+	/**
+	 * Adds a {@link JComponent} to a {@link JPanel}. Uses the
+	 * {@link FlowLayout} with left orientation for layouting.
+	 * 
+	 * @param panel
+	 * @param component
+	 */
+	private void addComponentToPanel(JPanel panel, JComponent component) {
+		JPanel tmpPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		tmpPanel.add(component);
+		panel.add(tmpPanel);
 	}
 }

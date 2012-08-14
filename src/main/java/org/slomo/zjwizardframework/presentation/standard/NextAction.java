@@ -6,7 +6,13 @@ import javax.swing.AbstractAction;
 
 import org.slomo.zjwizardframework.IWizardModule;
 
-public class NextAction extends AbstractAction {
+/**
+ * Action for the 'next' button. Advances the wizard one step further via
+ * {@link IWizardModule#next()}.
+ * 
+ * @author Kevin Zogg
+ */
+class NextAction extends AbstractAction {
 	private static final long serialVersionUID = -8609083049169385842L;
 
 	private final IWizardModule wizard;
@@ -15,6 +21,9 @@ public class NextAction extends AbstractAction {
 		this.wizard = wizard;
 	}
 
+	/**
+	 * Calls next on the wizard.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		wizard.next();

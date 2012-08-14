@@ -1,6 +1,6 @@
 package org.slomo.zjwizardframework.presentation.inputproperty;
 
-import org.slomo.zjwizardframework.presentation.standard.InteractiveStepPresenter;
+import org.slomo.zjwizardframework.presentation.IInteractiveStepPresenter;
 
 /**
  * Wizard input property which can be represented by a checkbox.
@@ -24,7 +24,7 @@ public class CheckboxInputProperty extends AbstractLabelledProperty {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void presentWith(InteractiveStepPresenter interactiveStepPresenter) {
+	public void presentWith(IInteractiveStepPresenter interactiveStepPresenter) {
 		interactiveStepPresenter.render(this);
 	}
 

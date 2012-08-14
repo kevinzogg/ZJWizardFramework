@@ -6,7 +6,13 @@ import javax.swing.AbstractAction;
 
 import org.slomo.zjwizardframework.IWizardModule;
 
-public class PrevAction extends AbstractAction {
+/**
+ * Action for the 'back' button. Goes one step back in the wizard by calling
+ * {@link IWizardModule#previous()}.
+ * 
+ * @author Kevin Zogg
+ */
+class PrevAction extends AbstractAction {
 	private static final long serialVersionUID = -8609083049169385842L;
 
 	private final IWizardModule wizard;
@@ -15,6 +21,9 @@ public class PrevAction extends AbstractAction {
 		this.wizard = wizard;
 	}
 
+	/**
+	 * Goes one step back in the wizard.
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		wizard.previous();
